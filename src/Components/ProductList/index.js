@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
@@ -8,6 +8,20 @@ import Col from 'react-bootstrap/Col';
 
 const ProductList = (props) => {
     const { productData, addToCart, removeCart, cart } = props
+    const [buttonToggle, setButtonToggle] = useState({});
+
+    const handleButtonClick = (productId) => {
+        setButtonToggle((prevToggles) => ({
+            ...prevToggles,
+            [productId]: !prevToggles[productId],
+        }));
+
+        if (buttonToggle[productId]) {
+            removeCart(productId);
+        } else {
+            addToCart(productId);
+        }
+    };
 
     return (
         <Row className='mt-5'>
@@ -23,21 +37,17 @@ const ProductList = (props) => {
                                 <Card.Text>Rating: {Array(data.rating).fill().map((_, index) => <span key={index}>★</span>)}</Card.Text>
 
                                 <Button
-                                    variant="primary"
-                                    onClick={() => addToCart(data.id)}
-                                    disabled={data.count > 1}
+                                    variant={buttonToggle[data.id] ? 'danger' : 'primary'}
+                                    onClick={() => handleButtonClick(data.id)}
                                 >
-                                    Add
-                                </Button>
-                                <br /><br />
-                                <Button
-                                    variant="danger"
-                                    onClick={() => removeCart(data.id)}
-                                    disabled={data.count < 0}
-                                >
-                                    Remove
+                                    {buttonToggle[data.id] ? 'Remove from cart' : 'Add to cart'}
                                 </Button>
 
+                                {/* <button onclick= {(e)=>setToggleButton(!button)}> 
+ {!button? "Add" : "" remove"}
+</button> */}
+
+                                {/* <button>{!button? "Add" : "" remove"}</button> */}
 
 
 

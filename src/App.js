@@ -41,8 +41,9 @@ const productData = [
 ]
 function App() {
   const [cart, setCart] = useState([]);
-
+  const [button, setButton] = useState(false)
   const addToCart = (productId) => {
+
     setCart((prevCart) => [...prevCart, productId]);
   };
 
